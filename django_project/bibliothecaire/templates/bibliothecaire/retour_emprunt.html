@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retour d'Emprunt</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Retour d'Emprunt</h1>
+
+   <!-- bibliothecaire/retour_emprunt.html -->
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+        <button type="submit">Retourner l'emprunt</button>
+    </form>
+
+    <a href="{% url 'liste_medias' %}">Retour à la liste des Médias</a>
+    <a href="{% url 'liste_membres' %}">Retour à la liste des Membres</a>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- membre/templates/membre/list_medias.html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Médias</title>
+</head>
+<body>
+    <h1>Liste des Médias</h1>
+    <ul>
+        {% for media in medias %}
+            <li>{{ media.title }} - {{ media.description }}</li>
+        {% empty %}
+            <li>Aucun média disponible.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

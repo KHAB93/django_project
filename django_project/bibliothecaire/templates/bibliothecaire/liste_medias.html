@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Médias</title>
+  {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Liste des Médias</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for media in medias %}
+            <tr>
+                <td>{{ media.id }}</td>
+                <td>{{ media.titre }}</td>
+                <td>{{ media.auteur }}</td>
+                <td>{{ media.type }}</td>
+                <td>
+                    <a href="{% url 'modifier_media' media.id %}">Modifier</a>
+                    <a href="{% url 'supprimer_media' media.id %}">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Aucun média disponible.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'ajout_media' %}">Ajouter un Nouveau Média</a>
+    <a href="{% url 'liste_membres' %}">Retour à la liste des Membres</a>
+</body>
+</html>
