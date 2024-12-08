@@ -1,3 +1,4 @@
+<!-- templates/bibliothecaire/liste_membres.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,35 +11,29 @@
 <body>
     <h1>Liste des Membres</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for membre in membres %}
-            <tr>
-                <td>{{ membre.id }}</td>
-                <td>{{ membre.nom }}</td>
-                <td>{{ membre.email }}</td>
-                <td>
-                    <a href="{% url 'mettre_a_jour_membre' membre.id %}">Modifier</a>
-                    <a href="{% url 'supprimer_membre' membre.id %}">Supprimer</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">Aucun membre disponible.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% if membres %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Date d'Inscription</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for membre in membres %}
+                    <tr>
+                        <td>{{ membre.nom }}</td>
+                        <td>{{ membre.email }}</td>
+                        <td>{{ membre.date_inscription }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun membre trouvé.</p>
+    {% endif %}
 
-    <a href="{% url 'creer_membre' %}">Ajouter un Nouveau Membre</a>
-    <a href="{% url 'liste_medias' %}">Retour à la liste des Médias</a>
+    <a href="{% url 'bibliothecaire:ajouter_membre' %}">Ajouter un Membre</a>
 </body>
 </html>

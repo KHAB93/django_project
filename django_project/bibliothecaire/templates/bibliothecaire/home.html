@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Projet Django</title>
+    <style>
+        /* Styles pour le menu */
+        nav {
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            position: relative;
+            margin-right: 20px;
+        }
+        nav ul li ul {
+            display: none; /* Masquer le sous-menu par défaut */
+            position: absolute;
+            top: 100%; /* Positionner le sous-menu juste en dessous */
+            left: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000;
+        }
+        nav ul li.active ul {
+            display: block; /* Afficher le sous-menu si l'élément parent a la classe active */
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            display: block; /* Rendre le lien cliquable sur toute la zone */
+        }
+        nav ul li a:hover {
+            background-color: #e2e6ea; /* Changer la couleur de fond au survol */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Accueil</a></li>
+            <li>
+                <a href="#" id="bibliothecaire-menu" aria-haspopup="true" aria-expanded="false">Bibliothécaire</a>
+                <ul id="sous-menu">
+                    <li><a href="{% url 'bibliothecaire:ajouter_emprunt' %}">Ajouter Emprunt</a></li>
+                    <li><a href="{% url 'bibliothecaire:ajouter_media' %}">Ajouter Média</a></li>
+                    <li><a href="{% url 'bibliothecaire:creer_membre' %}">Créer Membre</a></li>
+                    <li><a href="{% url 'bibliothecaire:liste_medias' %}">Liste Médias</a></li>
+                    <li><a href="{% url 'bibliothecaire:liste_membres' %}">Liste Membres</a></li>
+                    <li><a href="{% url 'bibliothecaire:modifier_membre' 1 %}">Modifier Membre</a></li> <!-- Remplacez 1 par l'ID réel -->
+                    <li><a href="{% url 'bibliothecaire:retour_emprunt' %}">Retour Emprunt</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    <script>
+    // JavaScript pour gérer l'affichage du sous-menu
+    document.getElementById('bibliothecaire-menu').addEventListener('click', function(event) {
+        event.preventDefault(); // Empêche le comportement par défaut du lien
+        var sousMenu = document.getElementById('sous-menu');
+        var isExpanded = sousMenu.style.display === 'block'; // Vérifie si le sous-menu est déjà affiché
+        sousMenu.style.display = isExpanded ? 'none' : 'block'; // Alterne l'affichage
+        this.setAttribute('aria-expanded', !isExpanded); // Met à jour l'attribut aria-expanded
+    });
+
+    // Fermer le sous-menu si l'utilisateur clique en dehors
+    document.addEventListener('click', function(event) {
+        var sousMenu = document.getElementById('sous-menu');
+        var bibliothecaireMenu = document.getElementById('bibliothecaire-menu');
+        if (!bibliothecaireMenu.contains(event.target) && !sousMenu.contains(event.target)) {
+            sousMenu.style.display = 'none'; // Ferme le sous-menu
+            bibliothecaireMenu.setAttribute('aria-expanded', 'false'); // Met à jour l'attribut aria-expanded
+        }
+    });
+</script>
+</body>
+</html>

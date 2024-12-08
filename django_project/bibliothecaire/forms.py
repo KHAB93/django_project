@@ -5,7 +5,7 @@ from .models import Membre, Media, Emprunt, Livre
 class MembreForm(forms.ModelForm):
     class Meta:
         model = Membre
-        fields = ['nom', 'email', 'adresse']  # Liste des champs à inclure dans le formulaire
+        fields = ['nom', 'email', 'adresse']
         widgets = {
             'nom': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
@@ -15,11 +15,7 @@ class MembreForm(forms.ModelForm):
 class MediaForm(forms.ModelForm):
     class Meta:
         model = Media
-        fields = ['titre', 'disponible']  # Liste des champs à inclure dans le formulaire
-        widgets = {
-            'titre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre'}),
-            'disponible': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        }
+        fields = ['titre', 'auteur', 'date_publication', 'file', 'disponible']
 
 class EmpruntForm(forms.ModelForm):
     class Meta:
@@ -39,3 +35,8 @@ class RetourEmpruntForm(forms.ModelForm):
     class Meta:
         model = Emprunt  # Remplacez par votre modèle d'emprunt
         fields = ['id', 'date_retour']  # Ajoutez les champs nécessaires
+
+class RetourEmpruntForm(forms.ModelForm):
+    class Meta:
+        model = Emprunt
+        fields = ['id']

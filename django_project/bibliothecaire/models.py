@@ -4,7 +4,12 @@ from django.utils import timezone
 class Membre(models.Model):
     nom = models.CharField(max_length=100)
     email = models.EmailField()
-    adresse = models.CharField(max_length=255, default="Non spécifié")
+    adresse = models.CharField(max_length=255)
+    date_inscription = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.nom
+
 
     def __str__(self):
         return self.nom

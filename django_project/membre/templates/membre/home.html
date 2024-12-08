@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+  <style>
+        /* Styles pour le menu */
+        nav {
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            position: relative;
+            margin-right: 20px;
+        }
+        nav ul li ul {
+            display: none; /* Masquer le sous-menu par défaut */
+            position: absolute;
+            top: 100%; /* Positionner le sous-menu juste en dessous */
+            left: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000;
+        }
+        nav ul li.active ul {
+            display: block; /* Afficher le sous-menu si l'élément parent a la classe active */
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            display: block; /* Rendre le lien cliquable sur toute la zone */
+        }
+        nav ul li a:hover {
+            background-color: #e2e6ea; /* Changer la couleur de fond au survol */
+        }
+    </style>
+
+</head>
+<body>
+
+<header>
+
+  <nav>
+        <ul>
+            {% url 'membre_home' as membre_home_url %}
+          <a href="{% url 'home' %}">Accueil</a>
+
+
+            {% url 'bibliothecaire:list_medias' as list_medias_url %}
+
+
+                <a href="{{ list_medias_url }}" class="{% if request.path == list_medias_url %}active{% endif %}">Liste des médias</a>
+        </ul>
+    </nav>
+</header>
+
+</body>
+</html>

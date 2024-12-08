@@ -3,8 +3,29 @@ from .models import Membre, Media, Emprunt, Livre
 from .forms import MembreForm, MediaForm, EmpruntForm, LivreForm, RetourEmpruntForm
 from django.utils import timezone
 from datetime import timedelta
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 
+def home_view(request):
+    return render(request, 'home.html')
+
+def ajouter_emprunt(request):
+    if request.method == 'POST':
+        form = EmpruntForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_medias')  # Redirect after saving
+    else:
+        form = EmpruntForm()
+
+    return render(request, 'bibliothecaire/ajouter_emprunt.html', {'form': form})
+
+def bibliothecaire_view(request):
+    return render(request, 'bibliothecaire/home.html')
+
+def bibliothecaire_home(request):
+    return render(request, 'bibliothecaire/home.html')
 
 def creer_membre(request):
     if request.method == 'POST':
@@ -16,11 +37,9 @@ def creer_membre(request):
         form = MembreForm()
     return render(request, 'bibliothecaire/creer_membre.html', {'form': form})
 
-
 def liste_membres(request):
     membres = Membre.objects.all()
     return render(request, 'bibliothecaire/liste_membres.html', {'membres': membres})
-
 
 def mettre_a_jour_membre(request, membre_id):
     membre = get_object_or_404(Membre, id=membre_id)
@@ -47,15 +66,19 @@ def liste_medias(request):
     medias = Media.objects.all()
     return render(request, 'bibliothecaire/liste_medias.html', {'medias': medias})
 
-
-def ajout_media(request):
+def ajouter_media(request):
     if request.method == 'POST':
-        form = MediaForm(request.POST)
+        form = MediaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('liste_medias')
+            return redirect('media_list')
     else:
         form = MediaForm()
+    return render(request, 'ajouter_media.html', {'form': form})
+
+def ajout_media(request):
+
+    form = ...
     return render(request, 'bibliothecaire/ajouter_media.html', {'form': form})
 
 
@@ -109,18 +132,16 @@ def retour_emprunt(request):
         form = RetourEmpruntForm(request.POST)
         if form.is_valid():
             emprunt = get_object_or_404(Emprunt, id=form.cleaned_data['id'])
-
             if timezone.now() > (emprunt.date_emprunt + timedelta(weeks=1)):
-
                 form.add_error(None, "L'emprunt ne peut pas être retourné après une semaine.")
             else:
                 emprunt.date_retour = timezone.now()
                 emprunt.save()
-                return redirect('liste_medias')
+                return redirect('liste_medias')  # Redirigez vers la liste des médias ou une autre page
     else:
         form = RetourEmpruntForm()
 
-    return render(request, 'retour_emprunt.html', {'form': form})
+    return render(request, 'bibliothecaire/retour_emprunt.html', {'form': form})
 
 def liste_medias(request):
     livres = Livre.objects.all()
@@ -137,6 +158,13 @@ def ajout_livre(request):
         form = LivreForm()
     return render(request, 'bibliothecaire/ajouter_livre.html', {'form': form})
 
+def media_list(request):
+    # Récupérer tous les médias disponibles
+    medias = Media.objects.all()
+    return render(request, 'media_list.html', {'medias': medias})
 
-
-
+class MediaCreateView(CreateView):
+    model = Media
+    form_class = MediaForm
+    template_name = 'bibliothecaire/ajouter_media.html'
+    success_url = reverse_lazy('bibliothecaire:liste_medias')
